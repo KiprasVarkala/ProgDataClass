@@ -1,4 +1,4 @@
-# ProgDataClass
+# progdata-class
 
 Repos for Programming with Data class
 
