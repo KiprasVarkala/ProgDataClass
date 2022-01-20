@@ -1,0 +1,23 @@
+---
+title: "Exploring Rmarkdown"
+author: "Kipras Varkala"
+date: "1/20/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load}
+library(tibble)
+```
+
+```{r}
+mtcars_tbl <- as_tibble(mtcars, rownames = "model")
+
+mtcars
+mtcars_tbl
+knitr::kable(mtcars_tbl)
+```
+
