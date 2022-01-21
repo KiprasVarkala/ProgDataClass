@@ -2,9 +2,9 @@
 
 Repos for Programming with Data class
 
-/progdata-class contains class projects and assignments
+(/progdata-class) contains class projects and assignments
 
-/progdata-class/Getting Started contains practice files
+(/progdata-class/Getting Started) contains practice files
 
 Created by Kipras Varkala
 
