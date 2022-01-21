@@ -6,6 +6,8 @@ Repos for Programming with Data class
 
 (/progdata-class/Getting Started) contains practice files
 
+(/progdata-class/Lab #) contains the corresponding # Lab activity
+
 Created by Kipras Varkala
 
 ***About Me***
