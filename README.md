@@ -5,6 +5,7 @@ Repos for Programming with Data class
 [/progdata-class](https://github.com/KiprasVarkala/progdata-class) contains class projects and assignments
 
 [/progdata-class/Getting Started](https://github.com/KiprasVarkala/progdata-class/tree/main/Getting%20Started) contains practice files
+
 -------------------------------------------------------------------------------------------------------------
 ## Lab Activities:
 
