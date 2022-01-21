@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r Libraries}
+```{r libraries}
 library(tidyverse)
 library(palmerpenguins)
 ```
@@ -19,17 +19,45 @@ pengy <- palmerpenguins::penguins
 ```
 
 
-Exploring Functions
+# Exploring Functions:
 
-```{r Summary function}
+>Summary function
+
+```{r summary function}
 summary(pengy)
+
+#Provides summary statistics about the entire data set
 ```
 
-```{r Head function}
+Using the summary function, we can see the counts of different groups and the basic descriptive statistics of the numeric columns (mean, median, mode, etc.).
+
+>Head function
+
+```{r head function}
 head(pengy)
+
+#Displays the first 6 rows of the data set. You can use the tail() function to display the last 6 rows as well. 
 ```
 
-```{r}
+Using the head function, we can see a preview of the data set by looking at the first 6 rows. 
 
+>Structure function
+
+```{r structure function}
+str(pengy)
+
+#Outputs the structure of each column
 ```
+
+Using the structure function, we can see that not all columns have the sae structure. The data set has columns in factor, numeric, and integer formats.
+
+>Dimension function
+
+```{r dimension function}
+dim(pengy)
+
+#Shows the dimensions of the data set: # of rows/# of columns
+```
+
+Using the dimension function we can see that there are 344 rows and 8 columns in the penguin dataset.
 
