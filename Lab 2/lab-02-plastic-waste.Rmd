@@ -1,0 +1,126 @@
+---
+title: "lab-02-plastic-waste"
+author: "Kipras Varkala"
+date: "1/31/2022"
+output: html_document
+---
+## Load packages and data
+
+```{r setup, message=FALSE}
+library(tidyverse)
+```
+
+```{r load-data, message=FALSE}
+plastic_waste <- read.csv(here::here("data/plastic-waste.csv"))
+
+head(plastic_waste)
+
+dplyr::glimpse(plastic_waste)
+```
+
+## Exercises
+
+### Exercise 1
+
+
+
+```{r plastic-waste-continent}
+ggplot(plastic_waste) +
+  aes(x = plastic_waste_per_cap) +
+  facet_wrap(~continent) +
+  geom_histogram()
+```
+
+### Exercise 2
+
+```{r plastic-waste-density}
+
+ggplot(plastic_waste) +
+  aes(x = plastic_waste_per_cap) +
+  facet_wrap(~continent) +
+  geom_density(aes(y = after_stat(count)))
+```
+
+```{r filled by countinent and semi-transparent}
+ggplot(plastic_waste) +
+  aes(x = plastic_waste_per_cap, 
+      fill = continent) +
+  facet_wrap(~continent) +
+  geom_density(aes(y = after_stat(count)),
+               alpha = .3) 
+```
+
+
+### Exercise 3
+
+We define color and fill in aes because
+
+### Exercise 4
+
+Remove this text, and add your answer for Exercise 4 here.
+
+```{r plastic-waste-violin}
+ggplot(data = plastic_waste) +
+  aes(x = plastic_waste_per_cap) +
+  geom_histogram(binwidth = 0.2)
+```
+
+### Exercise 5
+
+Remove this text, and add your answer for Exercise 5 here.
+
+```{r plastic-waste-mismanaged}
+# insert code here
+```
+
+### Exercise 6
+
+Remove this text, and add your answer for Exercise 6 here.
+
+```{r plastic-waste-mismanaged-continent}
+ggplot(plastic_waste) +
+  aes(x = plastic_waste_per_cap) +
+  facet_wrap(~continent) +
+  geom_density(aes(y = after_stat(count)))
+```
+
+### Exercise 7
+
+Remove this text, and add your answer for Exercise 7 here.
+
+```{r plastic-waste-population-total}
+# insert code here
+```
+
+```{r plastic-waste-population-coastal}
+# insert code here
+```
+
+### Exercise 8
+
+Remove this text, and add your answer for Exercise 8 here.
+
+```{r recreate-viz}
+# insert code here
+```
+
+## Pro-Tips
+
+### Excercise 3
+
+Try this :D
+
+```
+ggplot(data = plastic_waste, 
+       mapping = aes(x = continent, 
+                     y = plastic_waste_per_cap)) +
+  geom_violin()+
+  geom_boxplot(width=.3, fill="green") +
+  stat_summary(fun.y=median, geom="point") 
+```
+
+### Exercise 5 
+
+Helpful reference:http://www.sthda.com/english/wiki/ggplot2-themes-and-background-colors-the-3-elements
+
+
