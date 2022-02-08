@@ -22,7 +22,7 @@ dplyr::glimpse(plastic_waste)
 
 ### Exercise 1
 
-
+We can see that most continents average around 0-1 plastic waste per capita. The only outlier is in North America in Trinidad and Tobago. A quick search shows that this one of the top 10 countries in the world producing [plastic waste](https://www.guardian.co.tt/news/forbes-tt-biggest-culprit-for-plastic-waste-per-capita-6.2.940861.820ca7f9ff)!
 
 ```{r plastic-waste-continent}
 ggplot(plastic_waste) +
@@ -31,7 +31,6 @@ ggplot(plastic_waste) +
   geom_histogram()
 ```
 
-### Exercise 2
 
 ```{r plastic-waste-density}
 
@@ -51,57 +50,92 @@ ggplot(plastic_waste) +
 ```
 
 
-### Exercise 3
+We define color and fill in aes() because they configure our plot globally while the alpha function only needs to apply to the geom. 
 
-We define color and fill in aes because
+### Exercise 2
 
-### Exercise 4
-
-Remove this text, and add your answer for Exercise 4 here.
+The density and data points help visualize how the data is distributed by country. We are able to identify which direction the distributions are skewed and whether they are unimodal, bimodal, or multimodal.
 
 ```{r plastic-waste-violin}
-ggplot(data = plastic_waste) +
-  aes(x = plastic_waste_per_cap) +
-  geom_histogram(binwidth = 0.2)
+ggplot(plastic_waste) +
+  aes(x = continent,
+      y = plastic_waste_per_cap,
+      fill = continent) +
+  geom_boxplot(color = "black",
+               alpha = .5) +
+  geom_point() +
+  ggdist::stat_slab(height = 0,
+                    color = "black",
+                    size = 0.3,
+                    alpha = .3,
+                    position = position_nudge(y = .2))
 ```
 
-### Exercise 5
+### Exercise 3
 
-Remove this text, and add your answer for Exercise 5 here.
+There does not appear to be a clear distinction between plastic waste per capita and mismanaged plastic waste per capita with the exception of Africa which appears to have a rather strong positive linear trend. 
 
 ```{r plastic-waste-mismanaged}
-# insert code here
+plastic_waste %>% filter(plastic_waste_per_cap < 3.5) %>%
+ggplot() +
+  aes(x = plastic_waste_per_cap,
+      y = mismanaged_plastic_waste_per_cap,
+      fill = continent,
+      color = continent) +
+  geom_point()
 ```
-
-### Exercise 6
-
-Remove this text, and add your answer for Exercise 6 here.
-
-```{r plastic-waste-mismanaged-continent}
-ggplot(plastic_waste) +
-  aes(x = plastic_waste_per_cap) +
-  facet_wrap(~continent) +
-  geom_density(aes(y = after_stat(count)))
-```
-
-### Exercise 7
-
-Remove this text, and add your answer for Exercise 7 here.
 
 ```{r plastic-waste-population-total}
-# insert code here
+plastic_waste %>% filter(plastic_waste_per_cap < 3.5) %>%
+ggplot() +
+  aes(x = plastic_waste_per_cap,
+      y = total_pop,
+      fill = continent,
+      color = continent) +
+  geom_point() +
+  geom_smooth(
+      color = "black",
+      fill = "red")
 ```
 
 ```{r plastic-waste-population-coastal}
-# insert code here
+plastic_waste %>% filter(plastic_waste_per_cap < 3.5) %>%
+ggplot() +
+  aes(x = plastic_waste_per_cap,
+      y = coastal_pop,
+      fill = continent,
+      color = continent) +
+  geom_point() +
+  geom_smooth(
+      color = "black",
+      fill = "red")
 ```
 
-### Exercise 8
+Using loess smooth to visualize the trends, it does not appear that either of the plots show a stronger association than the other. There does not seem to be any relationship between plastic waste per capita and total population or coastal population. 
 
-Remove this text, and add your answer for Exercise 8 here.
+### Buh Buh Buh Bonus!
+
+When we factor in the proportion of coastal population to total population, we see that there is a a positive relationship between plastic waste per capita and coastal population proportion up until about 0.2 plastic waste per capita and a coastal population proportion of 0.7 where the relationship levels off. These results suggest that the greater the coastal population, plastic waste per capita also increases to a certain point. Once the proportion of coastal-to-total population is at about 0.7, then having more people living on the coast is not associated with more plastic waste per capita. 
 
 ```{r recreate-viz}
-# insert code here
+plastic_waste_2 <- plastic_waste %>% filter(plastic_waste_per_cap < 3.5) %>%
+  mutate(
+  coast_over_total = coastal_pop/total_pop
+)
+ggplot(plastic_waste_2) +
+  aes(x = coast_over_total,
+      y = plastic_waste_per_cap,
+      color = continent) +
+  geom_point() +
+    geom_smooth(color = "black",
+              fill = "black") +
+  ggtitle("Plastic waste vs. coastal population proportion") + 
+  labs(
+              x="Coastal population proportion (Coastal / total population)", 
+              y="Plastic waste per capita",
+              title="Plastic waste vs. coastal population proportion",
+              subtitle="by continent",
+              color = "Continent") 
 ```
 
 ## Pro-Tips
