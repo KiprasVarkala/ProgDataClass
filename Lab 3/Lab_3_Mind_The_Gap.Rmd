@@ -78,6 +78,7 @@ gapdat %>%
   aes(x = lifeExp, y = log(gdpPercap)) + 
   geom_point() 
 ```
+
 ### Excerise 2: Explore two variables with dplyr and ggplot2
 
 #### 2.1
