@@ -182,7 +182,7 @@ carsSubCat %>%
 filter(gapminder, country == c("Rwanda", "Afghanistan"))
 ```
 
-The issue is that half of the data is lost when having the filter function look these countries serially. Instead,
+The issue is that half of the data is lost when having the filter function look for these countries serially. Instead,
 using the %in% operator looks for whether anything that matches within the vector. 
 
 Below is the adjusted code.
