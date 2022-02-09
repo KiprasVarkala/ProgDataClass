@@ -13,11 +13,11 @@ library(gapminder)
 library(dplyr)
 ```
 
-##Exercises
+## Exercises
 
-###Exercise 1: Basic dplyr
+### Exercise 1: Basic dplyr
 
-####1.1
+#### 1.1
 
 ```{r filtering}
 gapdat <- gapminder
@@ -30,7 +30,7 @@ gapdat %>%
   print()
 ```
 
-####1.2
+#### 1.2
 
 ```{r selecting}
 gapdat %>%
@@ -40,7 +40,7 @@ gapdat %>%
   print()
 ```
 
-####1.3
+#### 1.3
 
 ```{r selecting again}
 Rwanda <-  
@@ -56,7 +56,7 @@ Rwanda <-
   print()
 ```
 
-####1.4
+#### 1.4
 
 ```{r filtering again}
 gapdat %>%
@@ -69,7 +69,7 @@ gapdat %>%
   print()
 ```
 
-####1.5
+#### 1.5
 
 ```{r scatterplot}
 gapdat %>%
@@ -78,9 +78,9 @@ gapdat %>%
   aes(x = lifeExp, y = log(gdpPercap)) + 
   geom_point() 
 ```
-###Excerise 2: Explore two variables with dplyr and ggplot2
+### Excerise 2: Explore two variables with dplyr and ggplot2
 
-####2.1
+#### 2.1
 
 ```{r exploring continuous variables}
 #loading data
@@ -128,7 +128,7 @@ carsSubCont %>%
   )
 ```
 
-####2.2
+#### 2.2
 
 ```{r exploring mixed variables}
 cars$cyl <- as.character(cars$cyl)
@@ -175,7 +175,7 @@ carsSubCat %>%
   )
 ```
 
-###Buh Buh Buh Bonus O'Clock
+### Buh Buh Buh Bonus O'Clock
 
 ```{r Bonus Exercise: Recycling}
 filter(gapminder, country == c("Rwanda", "Afghanistan"))
