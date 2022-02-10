@@ -17,6 +17,8 @@ Repos for Programming with Data class
 
 [Lab 3](https://github.com/KiprasVarkala/progdata-class/tree/main/Lab%203)
 
+[Lab 4](https://github.com/KiprasVarkala/progdata-class/tree/main/Lab%204)
+
 -------------------------------------------------------------------------------------------------------------
 ***About Me***
 
