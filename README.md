@@ -6,13 +6,16 @@ Repos for Programming with Data class
 
 [/progdata-class/Getting Started](https://github.com/KiprasVarkala/progdata-class/tree/main/Getting%20Started) contains practice files
 
+[/progdata-class/data](https://github.com/KiprasVarkala/progdata-class/tree/main/data) contains data sets used in homework or practice exercises
+
 -------------------------------------------------------------------------------------------------------------
 ## Lab Activities:
 
 [Lab 1](https://github.com/KiprasVarkala/progdata-class/tree/main/Lab%201)
 
+[Lab 2](https://github.com/KiprasVarkala/progdata-class/tree/main/Lab%202)
 
-
+[Lab 3](https://github.com/KiprasVarkala/progdata-class/tree/main/Lab%203)
 
 -------------------------------------------------------------------------------------------------------------
 ***About Me***
