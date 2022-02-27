@@ -9,12 +9,20 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 
 library(dplyr)
+library(tidyr)
 ```
 
 ```{r load data}
 dictionary <- readr::read_csv(here::here("C:/Users/kvpsy/GitHub/ProgDataClass/data", "green-dictionary.csv"))
 green_data <- readr::read_csv(here::here("C:/Users/kvpsy/GitHub/ProgDataClass/data", "green-data.csv"))
 ```
+
+
+## Questions
+
+
+### 1. Inspect the item responses (e.g., with graphs or by summarizing distinct values). Is anything unusual?
+
 ```{r}
 raw_totals <-
 green_data %>%
@@ -25,32 +33,56 @@ green_data %>%
     comp_total = mean(c_across(starts_with("comp")), na.rm = TRUE),
     intel_total = mean(c_across(starts_with("intel")), na.rm = TRUE),
     open_total = mean(c_across(starts_with("open")), na.rm = TRUE),
+    student = factor(student),
     .before = everything()
   ) %>%
   ungroup() 
 
+Totals_separate <- raw_totals %>%
+   select(
+     c(green_total : open_total),
+     student,
+   )
+
 head(raw_totals)
 
+summary(Totals_separate)
+
+#pivoting for plotting
+
+Totals_separate_long <- Totals_separate %>%
+  pivot_longer(cols      = c(comp_total : open_total),
+               names_to  = "Personality Category",
+               values_to = "Average Score"
+  )
+
+Totals_separate_long <- Totals_separate_long %>%
+  mutate(
+    `Personality Category` = factor(`Personality Category`)
+  )
 #plotting
 
-raw_totals %>%
+Totals_separate_long %>%
   ggplot() %>%
-  aes(x = )
+  aes(
+    x = `Personality Category`
+  ) +
+   geom_histogram() 
 ```
 
-Inspect the item responses (e.g., with graphs or by summarizing distinct values). Is anything unusual?
 
-Compute total scores for the four scales. Recode variables as needed.
 
-Rescale the variables so that they go from 0-100 instead of the original range. Name the recaled variables *_pomp.
+### 2. Compute total scores for the four scales. Recode variables as needed.
 
-Make plots that illustrate the distributions of the 4 POMP-scored variables.
+### 3. Rescale the variables so that they go from 0-100 instead of the original range. Name the recaled variables *_pomp.
 
-Make scatterplots showing the relationships between green reputation and each personality trait. Include trend lines for students and non-students. What do these plots show?
+### 4. Make plots that illustrate the distributions of the 4 POMP-scored variables.
 
-Compare green reputation for students and non-students using a rainfall plot (bar + density + data points).
+### 5. Make scatterplots showing the relationships between green reputation and each personality trait. Include trend lines for students and non-students. What do these plots show?
 
-Compute a summary table of means, SDs, medians, minima, and maxima for the four total scores for students and non-students.
+### 6. Compare green reputation for students and non-students using a rainfall plot (bar + density + data points).
+
+### 7. Compute a summary table of means, SDs, medians, minima, and maxima for the four total scores for students and non-students.
 
 
 

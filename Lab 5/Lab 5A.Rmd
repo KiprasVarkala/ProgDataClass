@@ -1,0 +1,30 @@
+---
+title: "Lab 5A"
+author: "Kipras Varkala"
+date: "2/17/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+lotr  <- read_csv("https://raw.githubusercontent.com/jennybc/lotr-tidy/master/data/lotr_tidy.csv") |> 
+  rename(Species = Race)
+```
+
+```{r Widen}
+(lotr_wide <- lotr %>% 
+  pivot_wider(id_cols = -c(Species, Words), 
+              names_from = Species, 
+              values_from = Words))
+```
+
+
+```{r Lengthen}
+lotr_wide %>%
+  pivot_longer(cols = c(Elf : Man), 
+               names_to  = "Species", 
+               values_to = "Words")
+```
+

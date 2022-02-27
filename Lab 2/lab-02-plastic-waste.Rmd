@@ -7,6 +7,7 @@ output: html_document
 ## Load packages and data
 
 ```{r setup, message=FALSE}
+#install.packages("tidyverse")
 library(tidyverse)
 ```
 
@@ -157,4 +158,51 @@ ggplot(data = plastic_waste,
 
 Helpful reference:http://www.sthda.com/english/wiki/ggplot2-themes-and-background-colors-the-3-elements
 
+```{r}
+library(dplyr)
+
+att <- read.csv("C:/Users/kvpsy/GitHub/ProgDataClass/data/EDA S22 W0209 meetingAttendanceList.csv")
+
+att$User.Action = NULL
+
+#Pivot Wider
+att <- att %>% 
+  group_by(Full.Name) %>% 
+  mutate(row_n = row_number()) %>% 
+  pivot_wider(Full.Name, 
+              names_from = row_n, 
+              values_from = Timestamp, 
+              names_glue = "Timestamp.{row_n}"
+              )
+if (startsWith(names(df), "Time") {
+  
+}
+Time <- att %>% select(starts_with('Time')) %>%
+  
+Time <- c(1, 3, 4, 5);    
+att[,startsWith(names(att), "Time")] = apply(att[,startsWith(names(att), "Time")], 2, function(x) as.numeric(as.character(x)));
+
+att[,cols] = apply(att[,cols], 2, function(x) as.numeric(as.character(x)));
+
+att %>% 
+  select(starts_with('Time')) %>%
+  as.numeric(as.character(unlist(att[,select(starts_with('Time')]))))
+
+att[,select(starts_with('Time'))] <- as.numeric(as.character(unlist(att[,select(starts_with('Time')]))))
+
+#Changing timestamps to numbers
+att %>% 
+  rowwise() %>%
+  mutate(
+   c_across(starts_with("Time")) = as.integer() 
+  )
+
+#Subsetting Time
+att %>% substring(Timestamp.1:Timestamp.6, 11, last)
+
+install.packages("lubridate")
+library(lubridate)
+res <- hms(Time.Training)        # format to 'hours:minutes:seconds'
+hour(res)*60 + minute(res)  
+```
 
