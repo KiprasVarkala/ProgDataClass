@@ -1,51 +1,141 @@
 ### Teams Attendance Script
 
-install.packages("shiny")
 library(shiny)
 
-# Replace this with your own function to graph the data
-CrunchMyDataPlease <- function(df){
-  library(ggplot2)
-  
-  
-  histogram <- ggplot(data=df, aes(x=Sepal.Width))
-  histogram + geom_histogram(binwidth=0.2, color="black", aes(fill=Species)) + 
-    xlab("Sepal Width") +  ylab("Frequency") + ggtitle("Histogram of Sepal Width")
-}
 
-
-# Define UI for application
+# Define UI for data upload app ----
 ui <- fluidPage(
   
-  # Application title
-  titlePanel("Graph me up"),
+  # App title ----
+  titlePanel("TAGA (Teams Attendance Grading Assistant)"),
   
-  # Sidebar with a tool to upload a csv file
+  # Sidebar layout with input and output definitions ----
   sidebarLayout(
+    
+    # Sidebar panel for inputs ----
     sidebarPanel(
+      
+      # Input: Select a file ----
       fileInput("file1", "Choose CSV File",
+                multiple = TRUE,
                 accept = c("text/csv",
                            "text/comma-separated-values,text/plain",
-                           ".csv"))
+                           ".csv")),
+      
+      # Horizontal line ----
+      tags$hr(),
+      
+      # Input: Checkbox if file has header ----
+      checkboxInput("header", "Header", TRUE),
+      
+      # Input: Select separator ----
+      radioButtons("sep", "Separator",
+                   choices = c(Comma = ",",
+                               Semicolon = ";",
+                               Tab = "\t"),
+                   selected = ","),
+      
+      # Input: Select quotes ----
+      radioButtons("quote", "Quote",
+                   choices = c(None = "",
+                               "Double Quote" = '"',
+                               "Single Quote" = "'"),
+                   selected = '"'),
+      
+      # Horizontal line ----
+      tags$hr(),
+      
+      # Input: Select number of rows to display ----
+      radioButtons("disp", "Display",
+                   choices = c(Head = "head",
+                               All = "all"),
+                   selected = "head"),
+      
+      # Input: Choose dataset ----
+      selectInput("dataset", "Choose a dataset:",
+                  choices = c("rock", "pressure", "cars")),
+      
+      # Button
+      downloadButton("downloadData", "Download")
+      
+      
     ),
     
-    # Show a plot of the generated distribution
+    # Main panel for displaying outputs ----
     mainPanel(
-      plotOutput("distPlot")
+      
+      # Output: Data file ----
+      tableOutput("contents")
+      
     )
+    
   )
 )
 
-# Define server logic required
+
+# Define server logic to read selected file ----
 server <- function(input, output) {
   
-  output$distPlot <- renderPlot({
-    req(input$file1)  # Don't do anything until the file has been chosen
-    df <- read.csv(input$file1$datapath)  # Read in the csv file selected
-    GraphMyDataPlease(df)  # Make a graph of the data
+  output$contents <- renderTable({
+    
+    # input$file1 will be NULL initially. After the user selects
+    # and uploads a file, head of that data file by default,
+    # or all rows if selected, will be shown.
+    
+    req(input$file1)
+    
+    # when reading semicolon separated files,
+    # having a comma separator causes `read.csv` to error
+    tryCatch(
+      {
+        df <- read.csv(input$file1$datapath,
+                       header = input$header,
+                       sep = input$sep,
+                       quote = input$quote)
+      },
+      error = function(e) {
+        # return a safeError if a parsing error occurs
+        stop(safeError(e))
+      }
+    )
+    
+    if(input$disp == "head") {
+      return(head(df))
+    }
+    else {
+      return(df)
+    }
+    
   })
   
 }
 
-# Run the application 
-shinyApp(ui = ui, server = server)
+serverOutput <- function(input, output) {
+  
+  # Reactive value for selected dataset ----
+  datasetInput <- reactive({
+    switch(input$dataset,
+           "rock" = rock,
+           "pressure" = pressure,
+           "cars" = cars)
+  })
+  
+  # Table of selected dataset ----
+  output$table <- renderTable({
+    datasetInput()
+  })
+  
+  # Downloadable csv of selected dataset ----
+  output$downloadData <- downloadHandler(
+    filename = function() {
+      paste(input$dataset, ".csv", sep = "")
+    },
+    content = function(file) {
+      write.csv(datasetInput(), file, row.names = FALSE)
+    }
+  )
+  
+}
+
+# Run the app ----
+shinyApp(ui, server, serverOutput)
