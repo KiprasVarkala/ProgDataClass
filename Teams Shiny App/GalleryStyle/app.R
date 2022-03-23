@@ -19,6 +19,7 @@ ui <- dashboardPage(skin = "purple",
         menuItem("Export", tabName = "Export", icon = icon("file-download"))
       )
     ),
+    
     dashboardBody(
       tags$head(tags$style(HTML(
         '.myClass { 
