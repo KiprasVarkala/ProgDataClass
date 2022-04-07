@@ -46,10 +46,10 @@ ui <- dashboardPage(skin = "purple",
                           "csv",
                           "text/csv",
                           "text/comma-separated-values,text/plain")),
-              actionButton("preview", "Preview Current Data Set"),
+              #actionButton("preview", "Preview Current Data Set"),
               fluidRow(
                 mainPanel(
-                  dataTableOutput("Import")
+                  tableOutput("Import")
                 )
               )
       ),
@@ -68,13 +68,17 @@ server <- function(input,output,server) {
   # Note that we use eventReactive() here, which depends on
   # input$update (the action button), so that the output is only
   # updated when the user clicks the button
-  file.Input <- eventReactive(input$preview,input$file, ignoreNULL = FALSE)
+  #file.Input <- eventReactive(input$preview,input$file, ignoreNULL = FALSE)
   
   # Generate a summary of the dataset ----
-  output$Import <- renderDataTable({
-    fInput <- file.Input()
-    head(fInput)
-  })
+  #output$Import <- renderTable({
+  #  fInput <- file.Input()
+  #  head(fInput)
+  
+  output$Import <- renderTable(
+    head(read.csv(input$file$datapath)
+  )
+  )
 }
 
 shinyApp(ui,server)
