@@ -134,13 +134,11 @@ output$downloadData <- downloadHandler(
     write.csv(datasetInput(), file, row.names = FALSE)
   }
 )
-#############################################################################
-#############################################################################
 #############################
 #WORKING
 #WORKING
 #WORKING
-#WORKING
+#WORKING BareBones
 #############################
 
 
@@ -156,9 +154,91 @@ ui <- dashboardPage(skin = "purple",
                         menuItem("Export", tabName = "Export", icon = icon("file-download"))
                       )
                     ),
+                    
                     dashboardBody(
                       tags$head(tags$style(HTML(
                         '.myClass { 
+        font-size: 20px;
+        line-height: 50px;
+        text-align: left;
+        font-family: "Bookman Old Style",Bookman Old Style,Arial,sans-serif;
+        padding: 0 15px;
+        overflow: hidden;
+        color: white;
+      }
+    '))),
+                      tags$script(HTML('
+      $(document).ready(function() {
+        $("header").find("nav").append(\'<span class="myClass"> Teams Attendance Grading Assistant </span>\');
+      })
+     ')),
+                      #header code credit: https://stackoverflow.com/questions/45176030/add-text-on-right-of-shinydashboard-header
+                      tabItems(
+                        tabItem(tabName = "Import",
+                                h2("Import CSV File"),
+                                fileInput("file", "Choose CSV File",
+                                          accept = c(
+                                            "csv",
+                                            "text/csv",
+                                            "text/comma-separated-values,text/plain")),
+                                actionButton("preview", "Preview Current Data Set"),
+                                fluidRow(
+                                  mainPanel(
+                                    dataTableOutput("Import")
+                                  )
+                                )
+                        ),
+                        tabItem(tabName = "Convert",
+                                h2("Convert CSV File")
+                        ),
+                        tabItem(tabName = "Export",
+                                h2("Export CSV File")
+                        )
+                      )
+                    ))
+
+server <- function(input,output,server) {
+  
+  # Return the requested dataset ----
+  # Note that we use eventReactive() here, which depends on
+  # input$update (the action button), so that the output is only
+  # updated when the user clicks the button
+  file.Input <- eventReactive(input$preview,input$file, ignoreNULL = FALSE)
+  
+  # Generate a summary of the dataset ----
+  output$Import <- renderDataTable({
+    fInput <- file.Input()
+    head(fInput)
+  })
+}
+
+shinyApp(ui,server)
+
+#############################
+#WORKING
+#WORKING
+#WORKING
+#WORKING File Input Function
+#############################
+
+
+library(shiny)
+library(shinydashboard)
+
+ui <- dashboardPage(
+  skin = "purple",
+  dashboardHeader(title = "TAGA"),
+  dashboardSidebar(
+    sidebarMenu(
+      menuItem("Import", tabName = "Import",  icon = icon("file-upload")),
+      menuItem("Convert", tabName = "Convert", icon = icon("recycle")),
+      menuItem("Export", tabName = "Export", icon = icon("file-download"))
+    )
+  ),
+  
+  dashboardBody(
+    tags$head(tags$style(HTML(
+      '.myClass { 
         font-size: 20px;
         line-height: 50px;
         text-align: left;
@@ -174,9 +254,19 @@ ui <- dashboardPage(skin = "purple",
       })
      ')),
     #header code credit: https://stackoverflow.com/questions/45176030/add-text-on-right-of-shinydashboard-header
+    #header code credit: https://stackoverflow.com/questions/45176030/add-text-on-right-of-shinydashboard-header
     tabItems(
       tabItem(tabName = "Import",
-              h2("Import CSV File")
+              h2("Import CSV File"),
+              fileInput("file", "Choose CSV File",multiple = FALSE, accept = NULL,
+                        width = NULL, buttonLabel = "Browse...",
+                        placeholder = "No file selected"),
+              actionButton("preview", "Preview Current Data Set"),
+              fluidRow(
+                mainPanel(
+                  dataTableOutput("impOut")
+                )
+              )
       ),
       tabItem(tabName = "Convert",
               h2("Convert CSV File")
@@ -185,10 +275,111 @@ ui <- dashboardPage(skin = "purple",
               h2("Export CSV File")
       )
     )
-                    ))
+  ))
 
 server <- function(input,output,server) {
-  
+  # Return the requested dataset ----
+  # Note that we use eventReactive() here, which depends on
+  # input$update (the action button), so that the output is only
+  # updated when the user clicks the button
+  observeEvent(
+    input$preview, 
+    {
+      data <- read.csv(input$file$datapath, header = TRUE, sep = ",")
+      
+      output$impOut <- renderDataTable({
+        datatable(data)
+      })
+    })
 }
 
 shinyApp(ui,server)
+
+#############################
+#WORKING
+#WORKING
+#WORKING
+#WORKING UTF-16 Conversion
+#############################
+
+library(DT)
+library(rio)
+library(shiny)
+library(shinydashboard)
+
+ui <- dashboardPage(
+  skin = "purple",
+  dashboardHeader(title = "TAGA"),
+  dashboardSidebar(
+    sidebarMenu(
+      menuItem("Import", tabName = "Import",  icon = icon("file-upload")),
+      menuItem("Convert", tabName = "Convert", icon = icon("recycle")),
+      menuItem("Export", tabName = "Export", icon = icon("file-download"))
+    )
+  ),
+  
+  dashboardBody(
+    tags$head(tags$style(HTML(
+      '.myClass { 
+        font-size: 20px;
+        line-height: 50px;
+        text-align: left;
+        font-family: "Bookman Old Style",Bookman Old Style,Arial,sans-serif;
+        padding: 0 15px;
+        overflow: hidden;
+        color: white;
+      }
+    '))),
+    tags$script(HTML('
+      $(document).ready(function() {
+        $("header").find("nav").append(\'<span class="myClass"> Teams Attendance Grading Assistant </span>\');
+      })
+     ')),
+    #header code credit: https://stackoverflow.com/questions/45176030/add-text-on-right-of-shinydashboard-header
+    #header code credit: https://stackoverflow.com/questions/45176030/add-text-on-right-of-shinydashboard-header
+    tabItems(
+      tabItem(tabName = "Import",
+              h2("Import CSV File"),
+              fileInput("file", "Choose CSV File",multiple = FALSE, accept = NULL,
+                        width = NULL, buttonLabel = "Browse...",
+                        placeholder = "No file selected"),
+              actionButton("preview", "Preview Current Data Set"),
+              fluidRow(
+                mainPanel(
+                  dataTableOutput("impOut")
+                )
+              )
+      ),
+      tabItem(tabName = "Convert",
+              h2("Convert CSV File")
+      ),
+      tabItem(tabName = "Export",
+              h2("Export CSV File")
+      )
+    )
+  ))
+
+server <- function(input,output,server) {
+  # Return the requested dataset ----
+  # Note that we use eventReactive() here, which depends on
+  # input$update (the action button), so that the output is only
+  # updated when the user clicks the button
+  observeEvent(
+    input$preview, 
+    {
+      data <- read.csv(input$file$datapath, fileEncoding = "UTF-16", sep = "\t", header = FALSE)
+      output$impOut <- renderDataTable({
+        datatable(data)
+      })
+    })
+}
+
+shinyApp(ui,server)
+
+#Credits
+
+#html header: https://stackoverflow.com/questions/45176030/add-text-on-right-of-shinydashboard-header
+
+#action button: https://stackoverflow.com/questions/55279042/displaying-input-file-by-user-in-r-shiny
+
+#reading UTF-16 file encoding: https://stackoverflow.com/questions/50070113/r-3-5-read-csv-not-able-to-read-utf-16-csv-file
