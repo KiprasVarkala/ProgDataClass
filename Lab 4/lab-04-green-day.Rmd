@@ -35,6 +35,7 @@ dictionary %>%
 green_data %>% 
   glimpse()
 ```
+
 -99 is not an intended rating option so we must change it to NA. 
 
 ```{r Double Check, Replace, Remove, and Reverse}
@@ -153,8 +154,11 @@ ggplot(re_green_data) +
   geom_jitter() +
   labs(title = 'Green Reputation and Curiosity')
 ```
+
 Green reputation and compassion: pretty similar slightly positve linear relationship with students scoring slightly higher. 
+
 Green reputation and openness: aside from the outliers in non-student, both groups share a positive curvilinear relationship. 
+
 Green reputation and compassion: curiosity appears to be positvely correlated with green reputation. 
 
 ### 6. Compare green reputation for students and non-students using a rainfall plot (bar + density + data points).
