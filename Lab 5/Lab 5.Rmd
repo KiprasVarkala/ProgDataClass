@@ -1,0 +1,104 @@
+---
+title: "Lab 5"
+author: "Kipras Varkala"
+date: "2/17/2022"
+output: html_document
+---
+# Lab 5
+
+## Lab 5A
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+lotr  <- read_csv("https://raw.githubusercontent.com/jennybc/lotr-tidy/master/data/lotr_tidy.csv") %>% 
+  rename(Species = Race)
+
+head(lotr)
+```
+
+## 1. Would you say this data is in tidy format?
+
+Yes, I would say this data is in tidy format.
+
+
+### 2. Widen the data so that we see the words spoken by each species, by putting species as its own column.
+
+```{r Widen}
+(lotr_wide <- lotr %>% 
+  pivot_wider(id_cols = -c(Species, Words), 
+              names_from = Species, 
+              values_from = Words))
+```
+### 3. Re-lengthen the wide LOTR data from Question 2 above.
+
+```{r Lengthen}
+lotr_wide %>%
+  pivot_longer(cols = c(Elf : Man), 
+               names_to  = "Species", 
+               values_to = "Words")
+```
+
+## Lab 5B
+
+```{r setup 2, include=FALSE}
+set.seed(123)
+missing_w2_parent <- sample(1:500, 30)
+missing_w2_child <- c(missing_w2_parent[1:5], sample(1:500, 25))
+family  <- read_csv(
+  "https://raw.githubusercontent.com/bwiernik/progdata/main/inst/tutorials/data/family_data.csv"
+) |> 
+  mutate(
+    across(
+      starts_with("w2") & contains("parent"),
+      ~ ifelse(family_id %in% missing_w2_parent, NA_real_, .x)
+    ),
+    across(
+      starts_with("w2") & contains("child"),
+      ~ ifelse(family_id %in% missing_w2_child, NA_real_, .x)
+    )
+  )
+
+family |> 
+  DT::datatable(rownames = FALSE)
+```
+
+### 1. Reshape the dataset to a “longer” format. Make each row 1 score. 
+
+```{r Reshape}
+family_longest <- family %>%
+  pivot_longer(
+  cols = w1_comm_parent:w2_satis_child,
+  names_to = c("wave", "measure", "family_member"), 
+  names_sep = "_",
+  values_to = "score"
+) %>% 
+  mutate(wave = stringr::str_replace(wave, "w", "")) %>%
+  mutate(wave = as.integer(wave))
+
+print(family_longest)
+```
+
+### 2. Reshape the dataset to a “longer” format. Make each row 1 person. 
+
+```{r Reshape 2}
+family_long <- family %>%
+  pivot_longer(
+    cols = -family_id,
+    names_to = c("wave", ".value", "family_member"), 
+    names_sep = "_"
+  )
+
+print(family_long)
+```
+
+### 3. Some families are missing wave 2 data for parent, child, or both. Which families are missing wave 2 data for at least one person?
+
+```{r}
+family_longest %>%
+  filter(wave == 2 & is.na(score))
+```
+
+### Is it easier to easier to find the missing data in the wide or long format?
+
+Long formats allow for easier identification of missing values as every row is represented by one person. 
