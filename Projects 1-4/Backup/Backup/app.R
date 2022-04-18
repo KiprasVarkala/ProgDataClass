@@ -2,7 +2,7 @@
 #WORKING
 #WORKING
 #WORKING
-#WORKING UTF-16 Conversion
+#WORKING Project Start
 #############################
 
 library(DT)
@@ -42,23 +42,17 @@ ui <- dashboardPage(
     #header code credit: https://stackoverflow.com/questions/45176030/add-text-on-right-of-shinydashboard-header
     #header code credit: https://stackoverflow.com/questions/45176030/add-text-on-right-of-shinydashboard-header
     tabItems(
-      tabItem(tabName = "Import",
-              h2("Import CSV File"),
-              fileInput("file", "Choose CSV File",multiple = FALSE, accept = NULL,
-                        width = NULL, buttonLabel = "Browse...",
-                        placeholder = "No file selected"),
-              actionButton("preview", "Preview Current Data Set"),
-              fluidRow(
-                mainPanel(
-                  dataTableOutput("impOut")
-                )
-              )
+      tabItem(tabName = "proj1",
+              h2("Project 1")
       ),
-      tabItem(tabName = "Convert",
-              h2("Convert CSV File")
+      tabItem(tabName = "proj2",
+              h2("Project 2")
       ),
-      tabItem(tabName = "Export",
-              h2("Export CSV File")
+      tabItem(tabName = "proj3",
+              h2("Project 3")
+      ),
+      tabItem(tabName = "proj4",
+              h2("Project 4")
       )
     )
   ))
