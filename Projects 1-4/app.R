@@ -6,9 +6,32 @@
 #############################
 
 library(DT)
+library(mosaic)
 library(rio)
 library(shiny)
 library(shinydashboard)
+library(tidytuesdayR)
+library(ggplot2)
+
+
+tuesdata <- tidytuesdayR::tt_load(2021, week = 41)
+
+nurses <- tuesdata$nurses
+
+variables <- c(
+  "State", 
+  "Year", 
+  "Total Employed RN",
+  "Employed Standard Error (%)", 
+  "Hourly Wage Avg", 
+  "Hourly Wage Median", 
+  "Annual Salary Avg", 
+  "Annual Salary Median", 
+  "Wage/Salary standard error (%)", 
+  "Total Employed (National)_Aggregate", 
+  "Total Employed (Healthcare, National)_Aggregate", 
+  "Total Employed (Healthcare, State)_Aggregate", 
+  "Yearly Total Employed (State)_Aggregate")
 
 ui <- dashboardPage(
   skin = "green",
@@ -17,7 +40,7 @@ ui <- dashboardPage(
     sidebarMenu(
       menuItem("1. Shiny App", tabName = "proj1",  icon = icon("file-code")),
       menuItem("2. File Upload", tabName = "proj2", icon = icon("file-upload")),
-      menuItem("3. Visualization", tabName = "proj3", icon = icon("image")),
+      menuItem("3. Scatter-Plotter-9000", tabName = "proj3", icon = icon("image")),
       menuItem("4. Data Analysis Report", tabName = "proj4", icon = icon("chart-bar"))
     )
   ),
@@ -57,11 +80,35 @@ ui <- dashboardPage(
                          border-width: 2px;")
       ),
       tabItem(tabName = "proj3",
-              h2("Visualization", align = "center"),
+              h2("Scatter-Plotter-9000", align = "center"),
               h3("(Shiny App)", align = "center"),
               tags$hr(style=
                         "border-color: black;
-                         border-width: 2px;")
+                         border-width: 2px;"),
+              fluidRow(
+                mainPanel(
+                  textInput(inputId = "title",
+                            label = "Title:",
+                            value = "The Relationship Between These Variables"),
+                  selectInput("xvar", "X-axis variable", variables, selected = "Total Employed RN"),
+                  selectInput("yvar", "Y-axis variable", variables, selected = "Year"),
+                  # selectInput(inputId = "xVar",
+                  #             label = "Choose a variable to plot on the X-axis",
+                  #             choices = c("State", "Year", "Total Employed RN","Employed Standard Error (%)", "Hourly Wage Avg", "Hourly Wage Median", "Annual Salary Avg", "Annual Salary Median", "Wage/Salary standard error (%)", "Total Employed (National)_Aggregate", "Total Employed (Healthcare, National)_Aggregate", "Total Employed (Healthcare, State)_Aggregate", "Yearly Total Employed (State)_Aggregate")),
+                  # selectInput(inputId = "yVar",
+                  #             label = "Choose a variable to plot on the X-axis",
+                  #             choices = c("State", "Year", "Total Employed RN","Employed Standard Error (%)", "Hourly Wage Avg", "Hourly Wage Median", "Annual Salary Avg", "Annual Salary Median", "Wage/Salary standard error (%)", "Total Employed (National)_Aggregate", "Total Employed (Healthcare, National)_Aggregate", "Total Employed (Healthcare, State)_Aggregate", "Yearly Total Employed (State)_Aggregate")),
+                  actionButton(inputId = "plot",
+                               label = "Plot!"),
+                  # ggvisOutput("plot1")
+                   plotOutput("scatterPlot", height = 350)
+                #   # Output: Verbatim text for data summary ----
+                #   verbatimTextOutput("summary"),
+                #   
+                #   # Output: HTML table with requested number of observations ----
+                #   tableOutput("view")
+                )
+              )
       ),
       tabItem(tabName = "proj4",
               h2("Data Analysis Report", align = "center"),
@@ -84,27 +131,90 @@ portfolio piece ideas and potential data sources throughout the semester. ")
     )
   ))
 
-server <- function(input,output,server) {
-  # Return the requested dataset ----
-  # Note that we use eventReactive() here, which depends on
-  # input$update (the action button), so that the output is only
-  # updated when the user clicks the button
-  observeEvent(
-    input$preview, 
-    {
-      data <- read.csv(input$file$datapath, fileEncoding = "UTF-16", sep = "\t", header = FALSE)
-      output$impOut <- renderDataTable({
-        datatable(data)
-      })
-    })
+server <- function(input,output) { 
+  
+  # observeEvent(
+  #   input$plot,
+  #   {
+  #     xvar_name <- names(variables)[variables == input$xvar]
+  #     yvar_name <- names(variables)[variables == input$yvar]
+  #     output$scatterPlot <- renderPlot({
+  #       ggplot(nurses, aes(x, y)) + geom_point() +
+  #         geom_smooth(method = lm, fullrange = TRUE, color = "black") +
+  #         geom_point(color = "black", alpha = 0.25)
+  #     })
+  #   }
+  # )
+  
+  output$scatterPlot <- reactive({
+    # Lables for axes
+    xvar_name <- names(variables)[variables == input$xvar]
+    yvar_name <- names(variables)[variables == input$yvar]
+    
+    # Normally we could do something like props(x = ~BoxOffice, y = ~Reviews),
+    # but since the inputs are strings, we need to do a little more work.
+    xvar <- prop("x", as.symbol(input$xvar))
+    yvar <- prop("y", as.symbol(input$yvar))
+  
+      ggplot(nurses, aes(xvar, yvar)) + geom_point() +
+               geom_smooth(method = lm, fullrange = TRUE, color = "black") +
+               geom_point(color = "black", alpha = 0.25)
+  })
+      
+  #     datasetInput <- reactive({
+  #       switch(input$xVar,
+  #              "State",
+  #              "Year",
+  #              "Total Employed RN",
+  #              "Employed Standard Error (%)",
+  #              "Hourly Wage Avg",
+  #              "Hourly Wage Median",
+  #              "Annual Salary Avg",
+  #              "Annual Salary Median",
+  #              "Wage/Salary standard error (%)",
+  #              "Total Employed (National)_Aggregate",
+  #              "Total Employed (Healthcare, National)_Aggregate",
+  #              "Total Employed (Healthcare, State)_Aggregate",
+  #              "Yearly Total Employed (State)_Aggregate"
+  #       )
+  #     })
+  #     #
+  #     # datasetInput <- reactive({
+  #     #   switch(input$yVar,
+  #     #          "State",
+  #     #          "Year",
+  #     #          "Total Employed RN",
+  #     #          "Employed Standard Error (%)",
+  #     #          "Hourly Wage Avg",
+  #     #          "Hourly Wage Median",
+  #     #          "Annual Salary Avg",
+  #     #          "Annual Salary Median",
+  #     #          "Wage/Salary standard error (%)",
+  #     #          "Total Employed (National)_Aggregate",
+  #     #          "Total Employed (Healthcare, National)_Aggregate",
+  #     #          "Total Employed (Healthcare, State)_Aggregate",
+  #     #          "Yearly Total Employed (State)_Aggregate"
+  #     #   )
+  #     # })
+  # 
+  # output$title <- renderText({
+  #   input$title
+  # })
+  # 
+  # output$summary <- renderPrint({
+  #   dataset <- datasetInput()
+  #   summary(dataset)
+  # })
+  # 
+  # output$view <- renderTable({
+  #   head(datasetInput(), n = input$obs)
+  # })
+  #   }
+  # )
 }
 
 shinyApp(ui,server)
 
 #Credits
 
-#html header: https://stackoverflow.com/questions/45176030/add-text-on-right-of-shinydashboard-header
-
-#action button: https://stackoverflow.com/questions/55279042/displaying-input-file-by-user-in-r-shiny
-
-#reading UTF-16 file encoding: https://stackoverflow.com/questions/50070113/r-3-5-read-csv-not-able-to-read-utf-16-csv-file
+#nurses data set: https://github.com/rfordatascience/tidytuesday/tree/master/data/2021/2021-10-05
