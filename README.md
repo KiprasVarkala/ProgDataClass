@@ -24,6 +24,11 @@ Repos for Programming with Data class
 [Lab 6](https://github.com/KiprasVarkala/progdata-class/tree/main/Lab%206)
 
 -------------------------------------------------------------------------------------------------------------
+## Peer Reviews:
+
+[1 - Jason Schmidt](https://github.com/jayschmidtavendano/progdata-class/issues/9)
+
+-------------------------------------------------------------------------------------------------------------
 ***About Me***
 
 I am a second year graduate student in the Cognitive, Neuroscience, and Social (CNS) Psychology program. I love cooking, baking, making my own hot sauce, and playing with my two pups! I joined this class to hone my R skills and bask in Brenton's infinite wisdom. 

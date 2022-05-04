@@ -2,7 +2,7 @@
 #WORKING
 #WORKING
 #WORKING
-#WORKING Project Start
+#WORKING WORKING WORKING
 #############################
 
 library(DT)
@@ -82,6 +82,7 @@ ui <- dashboardPage(
       tabItem(tabName = "proj3",
               h2("Scatter-Plotter-9000", align = "center"),
               h3("(Shiny App)", align = "center"),
+              # img(src='First-Aid.png', align = "right", width="400" height="300" alt="This is alternate text"),
               tags$hr(style=
                         "border-color: black;
                          border-width: 2px;"),
@@ -101,7 +102,7 @@ ui <- dashboardPage(
                   actionButton(inputId = "plot",
                                label = "Plot!"),
                   # ggvisOutput("plot1")
-                   plotOutput("scatterPlot", height = 350)
+                   renderPlot("scatterPlot", height = 350)
                 #   # Output: Verbatim text for data summary ----
                 #   verbatimTextOutput("summary"),
                 #   
