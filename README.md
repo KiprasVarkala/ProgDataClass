@@ -1,4 +1,4 @@
-# progdata-class
+# Programming With Data Class :)
 
 Repos for Programming with Data class
 
@@ -9,7 +9,7 @@ Repos for Programming with Data class
 [/progdata-class/data](https://github.com/KiprasVarkala/progdata-class/tree/main/data) contains data sets used in homework or practice exercises
 
 -------------------------------------------------------------------------------------------------------------
-## Lab Activities:
+## Lab Activities: (Completed)
 
 [Lab 1](https://github.com/KiprasVarkala/progdata-class/tree/main/Lab%201)
 
@@ -24,7 +24,7 @@ Repos for Programming with Data class
 [Lab 6](https://github.com/KiprasVarkala/progdata-class/tree/main/Lab%206)
 
 -------------------------------------------------------------------------------------------------------------
-## Peer Reviews:
+## Peer Reviews: (Completed)
 
 [1 - Angelina Venetto](https://github.com/avenetto/progdata-class/issues/7)
 
