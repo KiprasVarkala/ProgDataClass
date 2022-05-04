@@ -26,9 +26,11 @@ Repos for Programming with Data class
 -------------------------------------------------------------------------------------------------------------
 ## Peer Reviews:
 
-[1 - Cassandra Richardson](https://github.com/cassrichardson/progdata-class/issues/6)
+[1 - Angelina Venetto](https://github.com/avenetto/progdata-class/issues/7)
 
-[2 - Jason Schmidt](https://github.com/jayschmidtavendano/progdata-class/issues/9)
+[2 - Cassandra Richardson](https://github.com/cassrichardson/progdata-class/issues/6)
+
+[3 - Jason Schmidt](https://github.com/jayschmidtavendano/progdata-class/issues/9)
 
 -------------------------------------------------------------------------------------------------------------
 ***About Me***
