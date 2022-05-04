@@ -32,12 +32,30 @@ Repos for Programming with Data class
 
 [3 - Jason Schmidt](https://github.com/jayschmidtavendano/progdata-class/issues/9)
 
+[4 - Jude Sullivan](https://github.com/judesullivan/progdata-class/issues/9)
+
+[5 - Negar Maleki](https://github.com/negarmaleki96/progdata-class/issues/6)
+
+[6 - Otobo Ujah](https://github.com/oujah/progdata-class/issues/6)
+
+[7 - Priya Singh Collins](https://github.com/priyacollins/progdata-class/issues/8)
+
+[8 - Rebecca Upton](https://github.com/reupton/progdata-class/issues/9)
+
+[9 - Reilly Orman](https://github.com/rrorman/progdata-class/issues/9)
+
+[10 - Sabrina Eisenberg](https://github.com/sabeisenberg/progdata-class/issues/11)
+
+[11 - Tina Le](https://github.com/tinale9/ProgDataClass/issues/7)
+
+[12 - Valentina Fender](https://github.com/valentinafender/progdata-class/issues/8)
+
 -------------------------------------------------------------------------------------------------------------
 ## Class Portfolio: (In Progress)
 
 [Portfolio Shiny Website](https://kvarkala.shinyapps.io/projects_1-4/)
 
-Disclaimer: *Not mobile friendly*
+*Disclaimer: Not mobile friendly*
 
 -------------------------------------------------------------------------------------------------------------
 ***About Me***
