@@ -33,6 +33,11 @@ Repos for Programming with Data class
 [3 - Jason Schmidt](https://github.com/jayschmidtavendano/progdata-class/issues/9)
 
 -------------------------------------------------------------------------------------------------------------
+## Class Portfolio: (In Progress)
+
+[Portfolio Shiny Website](https://kvarkala.shinyapps.io/projects_1-4/)
+
+-------------------------------------------------------------------------------------------------------------
 ***About Me***
 
 I am a second year graduate student in the Cognitive, Neuroscience, and Social (CNS) Psychology program. I love cooking, baking, making my own hot sauce, and playing with my two pups! I joined this class to hone my R skills and bask in Brenton's infinite wisdom. 

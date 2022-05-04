@@ -17,3 +17,4 @@
   - *Something I know and that you, my peer, might like to know because it is relevant to something you struggled with.*
   
   
+    Error in chr_as_locations(x, vars, call = call) :
