@@ -55,7 +55,7 @@ Repos for Programming with Data class
 
 [Portfolio Shiny Website](https://kvarkala.shinyapps.io/projects_1-4/)
 
-*Disclaimer: Not mobile friendly*
+*Disclaimer: Not mobile friendly (Use 'desktop view' setting if on mobile)*
 
 -------------------------------------------------------------------------------------------------------------
 ***About Me***
