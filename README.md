@@ -51,9 +51,9 @@ Repos for Programming with Data class
 [12 - Valentina Fender](https://github.com/valentinafender/progdata-class/issues/8)
 
 -------------------------------------------------------------------------------------------------------------
-## Class Portfolio: (In Progress)
+## Class Portfolio: (Completed)
 
-[Portfolio Shiny Website](https://kvarkala.shinyapps.io/projects_1-4/)
+[Portfolio Shiny Website](https://kvarkala.shinyapps.io/projects_1-3/)
 
 *Disclaimer: Not mobile friendly (Use 'desktop view' setting if on mobile)*
 
