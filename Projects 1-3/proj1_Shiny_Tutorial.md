@@ -54,13 +54,20 @@
 #Load your libraries
 library(shiny)
 library(shinydashboard)
+library(tidytuesdayR)
 
 #Global variables. These variables can be referenced anywhere because they are outside of the UI and Server. In this case,
-#we are loading up some open access data on nurses to play around with. 
+#we are loading up some open access data on nurses to play around with. For the sake of simplicity, we will only be using a subset of the data.
 
+#Global
 tuesdata <- tidytuesdayR::tt_load(2021, week = 41)
 
 nurses <- na.omit(tuesdata$nurses)
+
+nurses <- 
+  nurses %>% 
+  select(c(3, 5, 6, 7)) %>% 
+  filter_at(vars(`Total Employed RN`, `Hourly Wage Avg`, `Hourly Wage Median`, `Annual Salary Avg`), all_vars(!is.na(.)))
 
 ui <- dashboardPage( #The dashboardPage houses everything you will be coding on the UI front
   skin = "black", #theme color

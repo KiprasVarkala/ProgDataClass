@@ -1,0 +1,126 @@
+---
+title: "Register Nurses (RNs) Data Analysis Report"
+output: html_document
+date: '2022-05-04'
+---
+
+```{r setup, include=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidytuesdayR)
+library(dplyr)
+library(ggplot2)
+library(forcats)
+library(tidyverse)
+
+#Turning "off" scientific notation because of the large numbers in the data set
+options(scipen = 100)
+```
+
+
+# Let's load and preview our data
+
+```{r Load Data}
+tuesdata <- tidytuesdayR::tt_load(2021, week = 41)
+
+nurses <- na.omit(tuesdata$nurses)
+
+#Subsetting the data and ensuring there are no NA values
+nurses <- 
+  nurses %>% 
+  select(c(1, 2, 3, 5, 6, 7)) %>% 
+  filter_at(vars(State, Year, `Total Employed RN`, `Hourly Wage Avg`, `Hourly Wage Median`, `Annual Salary Avg`), all_vars(!is.na(.)))
+
+head(nurses)
+```
+## Looking at the data we are working with, it would be intersting to know the relationship between of the Annual Salary Avg by year:
+
+### Let's first investigate how many Year groups we are looking at
+
+
+```{r Inspection}
+unique(nurses$Year)
+
+str(nurses)
+```
+
+It appears that there is data going back 11 years from 2010 - 2020. 
+It also appears that the variable Year is treated as a number rather than a category or factor. 
+
+### Plotting the relationship using a scatterplot will allow us to identify any trends in income over time. 
+### We have to make sure each year is treated as a factor rather than a continous number if we are to get separate categories by year. 
+
+## Annual Salary Average for RNs by Year (Boxplot)
+
+```{r Boxplot Year x Income}
+nurses %>%
+  ggplot(aes(x = factor(Year), y = `Annual Salary Avg`, fill = factor(Year))) +
+    geom_boxplot() +
+    geom_jitter(color="black", size=0.5, alpha=0.7) +
+    theme(
+      legend.position="none",
+      plot.title = element_text(size=12)
+    ) +
+    ggtitle("Annual Salary Average for RNs by Year") +
+    xlab("")
+```
+
+Plotting Annual Salary Average by year does not appear to be different as the years go by. There is a slight upward trend, but this appears to be negligible. If this null relationship is true, this would mean that income is not being matched for inflation. This is a huge assumption to make. So let us dig a little further and see if maybe total number of employed nurses might help us understand this relationship. 
+
+## Total Number of Employed RNs by Year (Boxplot)
+
+```{r Boxplot Year x TTL Emplyed}
+nurses %>%
+  ggplot(aes(x = factor(Year), y = `Total Employed RN`, fill = factor(Year))) +
+    geom_boxplot() +
+    geom_jitter(color="black", size=0.4, alpha=0.9) +
+    theme(
+      legend.position="none",
+      plot.title = element_text(size=11)
+    ) +
+    ggtitle("Total Number of Employed RNs by Year") +
+    xlab("")
+```
+There does not seem to be a change in employment over the years suggesting that the number of RNs in the field probably do not impact the relationship we are observing with annual salary average over time. Regardless, it would be prudent to observe this relationship directly.
+
+## Total Employed RNs by Annual Salary Average (scatterplot)
+
+```{r Scatterplot Total RN x Annual Salary}
+nurses %>%
+  ggplot(aes(x = `Total Employed RN`, y = `Annual Salary Avg`)) +
+  geom_point(color = "#4F7942", alpha = .5) +
+  geom_smooth()
+```
+
+Considering the great degree of overlapp, it would make interpretation easier if log transform our X-variable.
+
+## Total Employed RNs by Annual Salary Average (scatterplot) |Log Transformed|
+
+```{r Scatterplot Total RN x Annual Salary log10}
+nurses %>%
+  ggplot(aes(x = `Total Employed RN`, y = `Annual Salary Avg`)) +
+  geom_point(color = "#4F7942", alpha = .5) +
+  geom_smooth() +
+  scale_x_continuous(
+    trans = "log10"
+  )
+```
+
+We can see that the outliers of total number of employed nurses below 1,000 and annual salary average below 50,000 appears to make it difficult to interpret the relationship between these two variables. Let's go ahead and drop those values by subsetting. 
+
+## Total Employed RNs by Annual Salary Average (scatterplot) |Log Transformed| Outliers Dropped|
+
+```{r Scatterplot Total RN x Annual Salary log10 & outliers dropped}
+nursesSub<- subset(nurses,`Total Employed RN`>1000)
+
+nursesSub<- subset(nursesSub,`Annual Salary Avg`>50000)
+
+nursesSub %>%
+  ggplot(aes(x = `Total Employed RN`, y = `Annual Salary Avg`)) +
+  geom_point(color = "#4F7942", alpha = .5) +
+  geom_smooth() +
+  scale_x_continuous(
+    trans = "log10"
+  )
+```
+
+After transforming the data and removing the outliers, we are finally able to observe the relationship! There appears to be a slight dip in annual salary average when there are about 30,000 RNs employed and a positive relationship between the two variables once we get into 100,000+ total number of employed RNs. Further investigation is warranted.
